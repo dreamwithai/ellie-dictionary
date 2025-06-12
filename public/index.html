@@ -6,20 +6,20 @@
     <title>엘리의 단어장</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     
     <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
     
     <!-- Android Chrome Icons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512x512.png">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="./manifest.json">
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#667eea">
@@ -38,7 +38,7 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="엘리의 단어장">
     <meta property="og:description" content="중학생을 위한 영어 단어장 앱">
-    <meta property="og:image" content="/icon-512x512.png">
+    <meta property="og:image" content="./icon-512x512.png">
     <meta property="og:type" content="website">
     
     <!-- Korean Fonts -->
@@ -90,13 +90,13 @@
             </div>
         </div>
     </div>
-    <script src="/bundle.js"></script>
+    <script src="./bundle.js"></script>
     
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then(function(registration) {
                         console.log('SW registered: ', registration);
                     })
