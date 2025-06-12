@@ -359,64 +359,67 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                     </div>
                   </form>
                 ) : (
-                  // 일반 모드
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
-                    <div 
-                      className="word-item"
-                      style={{ 
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px'
-                      }}
-                    >
-                      {hiddenEnglish.has(word.id) ? (
-                        <strong style={{ 
-                          fontSize: '18px',
-                          color: '#999',
-                          fontStyle: 'italic',
-                          fontWeight: '400',
-                          minWidth: 'fit-content'
-                        }}>
-                          ???
-                        </strong>
-                      ) : (
-                        <strong style={{ 
-                          fontSize: '18px',
-                          color: memorizedWords.has(word.id) ? '#999' : '#333',
-                          minWidth: 'fit-content',
-                          textDecoration: memorizedWords.has(word.id) ? 'line-through' : 'none'
-                        }}>
-                          {word.english}
-                        </strong>
-                      )}
+                  // 일반 모드 - 2줄 레이아웃
+                  <div>
+                    {/* 첫 번째 줄: 단어 영역 + 체크 버튼 */}
+                    <div style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '12px'
+                    }}>
+                      <div 
+                        className="word-item"
+                        style={{ 
+                          flex: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '16px'
+                        }}
+                      >
+                        {hiddenEnglish.has(word.id) ? (
+                          <strong style={{ 
+                            fontSize: '20px',
+                            color: '#999',
+                            fontStyle: 'italic',
+                            fontWeight: '400',
+                            minWidth: 'fit-content'
+                          }}>
+                            ???
+                          </strong>
+                        ) : (
+                          <strong style={{ 
+                            fontSize: '20px',
+                            color: memorizedWords.has(word.id) ? '#999' : '#333',
+                            minWidth: 'fit-content',
+                            textDecoration: memorizedWords.has(word.id) ? 'line-through' : 'none'
+                          }}>
+                            {word.english}
+                          </strong>
+                        )}
+                        
+                        {hiddenKorean.has(word.id) ? (
+                          <span style={{ 
+                            fontSize: '18px',
+                            color: '#999',
+                            fontStyle: 'italic',
+                            fontWeight: '400'
+                          }}>
+                            ???
+                          </span>
+                        ) : (
+                          <span style={{ 
+                            fontSize: '18px',
+                            color: memorizedWords.has(word.id) ? '#999' : '#667eea',
+                            fontWeight: '500',
+                            textDecoration: memorizedWords.has(word.id) ? 'line-through' : 'none'
+                          }}>
+                            {word.korean}
+                          </span>
+                        )}
+                      </div>
                       
-                      {hiddenKorean.has(word.id) ? (
-                        <span style={{ 
-                          fontSize: '16px',
-                          color: '#999',
-                          fontStyle: 'italic',
-                          fontWeight: '400'
-                        }}>
-                          ???
-                        </span>
-                      ) : (
-                        <span style={{ 
-                          fontSize: '16px',
-                          color: memorizedWords.has(word.id) ? '#999' : '#667eea',
-                          fontWeight: '500',
-                          textDecoration: memorizedWords.has(word.id) ? 'line-through' : 'none'
-                        }}>
-                          {word.korean}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <div style={{ display: 'flex', gap: '4px', marginLeft: '12px' }}>
+                      {/* 체크 버튼 */}
                       <button
                         className="btn btn-small"
                         onClick={() => toggleMemorized(word.id)}
@@ -424,15 +427,26 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                           background: memorizedWords.has(word.id) ? '#2ed573' : '#ddd',
                           color: memorizedWords.has(word.id) ? 'white' : '#666',
                           border: 'none',
-                          minWidth: '28px',
-                          fontSize: '10px',
-                          padding: '4px'
+                          minWidth: '32px',
+                          height: '32px',
+                          fontSize: '12px',
+                          padding: '6px',
+                          borderRadius: '6px'
                         }}
                         title={memorizedWords.has(word.id) ? '외움 해제' : '외움 체크'}
                       >
-                        <Check size={10} />
+                        <Check size={12} />
                       </button>
-                      
+                    </div>
+                    
+                    {/* 두 번째 줄: 기능 버튼들 */}
+                    <div style={{ 
+                      display: 'flex', 
+                      gap: '6px', 
+                      justifyContent: 'flex-end',
+                      paddingTop: '8px',
+                      borderTop: '1px solid #f0f0f0'
+                    }}>
                       <button
                         className="btn btn-small"
                         onClick={() => toggleEnglishVisibility(word.id)}
@@ -440,9 +454,11 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                           background: hiddenEnglish.has(word.id) ? '#2ed573' : '#ffa502',
                           color: 'white',
                           border: 'none',
-                          minWidth: '28px',
+                          minWidth: '32px',
+                          height: '28px',
                           fontSize: '10px',
-                          padding: '4px'
+                          padding: '4px',
+                          borderRadius: '4px'
                         }}
                         title={hiddenEnglish.has(word.id) ? '영어 보기' : '영어 가리기'}
                       >
@@ -456,9 +472,11 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                           background: hiddenKorean.has(word.id) ? '#2ed573' : '#ffa502',
                           color: 'white',
                           border: 'none',
-                          minWidth: '28px',
+                          minWidth: '32px',
+                          height: '28px',
                           fontSize: '10px',
-                          padding: '4px'
+                          padding: '4px',
+                          borderRadius: '4px'
                         }}
                         title={hiddenKorean.has(word.id) ? '한글 보기' : '한글 가리기'}
                       >
@@ -472,9 +490,11 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                           background: '#3742fa',
                           color: 'white',
                           border: 'none',
-                          minWidth: '28px',
+                          minWidth: '32px',
+                          height: '28px',
                           fontSize: '10px',
-                          padding: '4px'
+                          padding: '4px',
+                          borderRadius: '4px'
                         }}
                         title="단어 수정"
                       >
@@ -492,9 +512,11 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                           background: '#ff4757',
                           color: 'white',
                           border: 'none',
-                          minWidth: '28px',
+                          minWidth: '32px',
+                          height: '28px',
                           fontSize: '10px',
-                          padding: '4px'
+                          padding: '4px',
+                          borderRadius: '4px'
                         }}
                         title="단어 삭제"
                       >
