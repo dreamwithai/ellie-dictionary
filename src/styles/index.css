@@ -1,0 +1,369 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+/* 모바일 최적화 */
+@media screen and (max-width: 768px) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  flex: 1;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 공통 버튼 스타일 */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* 카드 스타일 */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* 폼 스타일 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 헤더 스타일 */
+.header {
+  margin-bottom: 25px;
+  color: white;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.header-text {
+  text-align: center;
+  flex: 1;
+}
+
+.header-spacer {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.home-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.install-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.install-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.header h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+  font-size: 0.95em;
+  opacity: 0.9;
+}
+
+
+
+/* 검색 바 */
+.search-bar {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 50px 16px 20px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.search-input::placeholder {
+  font-size: 14px;
+  color: #999;
+}
+
+.search-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #667eea;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .container {
+    max-width: none;
+    padding: 15px;
+    margin: 0;
+  }
+  
+  .header h1 {
+    font-size: 1.8em;
+  }
+  
+  .header p {
+    font-size: 0.9em;
+  }
+  
+  .home-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .header-spacer {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+}
+
+/* 작은 모바일 화면 */
+@media (max-width: 480px) {
+  .container {
+    max-width: none;
+    padding: 12px;
+    margin: 0;
+  }
+  
+  .header h1 {
+    font-size: 1.6em;
+  }
+  
+  .header p {
+    font-size: 0.85em;
+  }
+  
+  .home-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .header-spacer {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .search-input {
+    font-size: 14px;
+    padding: 14px 45px 14px 18px;
+  }
+  
+  .search-input::placeholder {
+    font-size: 13px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 카드 내용 최적화 */
+.card {
+  overflow: hidden;
+}
+
+/* 카드 내부 레이아웃 최적화 */
+.card > div {
+  width: 100%;
+}
+
+/* 강제 한 줄 배치를 위한 추가 스타일 */
+@media (max-width: 600px) {
+  .card {
+    padding: 16px 14px;
+  }
+}
+
+/* 단어 카드 반응형 */
+@media (max-width: 768px) {
+  /* 태블릿: 2열 → 1열로 변경 */
+  .word-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 모바일에서는 단어와 뜻 사이 간격 줄임 */
+  .word-item {
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+  
+  /* 모바일: 카드 패딩 축소 */
+  .word-grid .card {
+    padding: 12px 16px !important;
+  }
+  
+  /* 모바일: 폰트 크기 조정 */
+  .word-item strong {
+    font-size: 16px !important;
+  }
+  
+  .word-item span {
+    font-size: 14px !important;
+  }
+  
+  /* 버튼 크기도 축소 */
+  .word-item + button {
+    min-width: 32px !important;
+    padding: 6px !important;
+  }
+} 
