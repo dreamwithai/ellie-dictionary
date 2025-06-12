@@ -1,14 +1,41 @@
-<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><title>엘리의 단어장 📚</title><meta name="description" content="중학생을 위한 영어 단어장 앱"><meta name="theme-color" content="#8B5CF6"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="엘리단어장"><meta name="apple-touch-fullscreen" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="application-name" content="엘리단어장"><meta name="msapplication-TileColor" content="#8B5CF6"><meta name="msapplication-tap-highlight" content="no"><meta name="format-detection" content="telephone=no"><meta name="HandheldFriendly" content="true"><meta name="MobileOptimized" content="width"><meta name="screen-orientation" content="portrait"><link rel="manifest" href="/manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="/icons-192X192.png"><link rel="apple-touch-icon" href="/icons-192X192.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons-192X192.png"><style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-        * {
-            font-family: 'Noto Sans KR', sans-serif;
-        }</style><script defer="defer" src="bundle.js"></script></head><body><div id="root"></div><script>if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>엘리의 단어장</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icons-192x192.png"><link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#667eea"><meta name="background-color" content="#8B5CF6"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="엘리의 단어장"><meta name="mobile-web-app-capable" content="yes"><meta name="application-name" content="엘리의 단어장"><meta name="description" content="중학생을 위한 영어 단어장 앱. 단어 추가, 암기 연습, 테스트 기능을 제공합니다."><meta name="keywords" content="영어, 단어장, 중학생, 학습, 암기, 테스트"><meta name="author" content="엘리의 단어장"><meta property="og:title" content="엘리의 단어장"><meta property="og:description" content="중학생을 위한 영어 단어장 앱"><meta property="og:image" content="/icon-512x512.png"><meta property="og:type" content="website"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"><style>body {
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }</style><script defer="defer" src="bundle.js"></script></head><body><div id="root"><div class="loading"><div><div class="spinner"></div><h2>엘리의 단어장</h2><p>앱을 로딩 중입니다...</p></div></div></div><script src="/bundle.js"></script><script>if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('SW 등록 성공:', registration.scope);
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
                     })
-                    .catch((error) => {
-                        console.log('SW 등록 실패:', error);
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
                     });
             });
         }</script></body></html>

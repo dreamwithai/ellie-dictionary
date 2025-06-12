@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>엘리의 단어장 - 리다이렉트 중...</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/dist/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/dist/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/dist/apple-touch-icon.png">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="중학생을 위한 영어 단어장 앱">
+    
     <script>
         // GitHub Pages에서 dist 폴더로 자동 리다이렉트
         window.location.href = './dist/index.html';
     </script>
     <style>
         body {
-            font-family: 'Malgun Gothic', sans-serif;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -35,14 +45,22 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .icon-preview {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: url('./dist/icon-512x512.png') center/contain no-repeat;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body>
     <div class="loading">
+        <div class="icon-preview"></div>
         <div class="spinner"></div>
-        <h2>엘리의 단어장</h2>
+        <h2>📚 엘리의 단어장</h2>
         <p>앱을 로딩 중입니다...</p>
-        <p><a href="./dist/index.html" style="color: #fff;">수동으로 이동하기</a></p>
+        <p><a href="./dist/index.html" style="color: #fff; text-decoration: underline;">수동으로 이동하기</a></p>
     </div>
 </body>
 </html> 

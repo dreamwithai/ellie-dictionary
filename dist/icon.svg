@@ -1,23 +1,70 @@
-<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B5CF6"/>
-      <stop offset="100%" style="stop-color:#A855F7"/>
+    <!-- 부드러운 그라데이션 -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fde68a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="faceGradient" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fde68a;stop-opacity:1" />
+    </radialGradient>
   </defs>
   
-  <!-- 배경 -->
-  <rect width="192" height="192" rx="38" fill="url(#bg)"/>
+  <!-- 배경 원 (더 부드러운 색상) -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" stroke="#f59e0b" stroke-width="6"/>
   
-  <!-- 책 아이콘 -->
-  <rect x="48" y="58" width="96" height="76" fill="white" rx="4"/>
+  <!-- 귀여운 책 모양 -->
+  <rect x="160" y="180" width="192" height="240" rx="20" ry="20" fill="url(#bookGradient)" stroke="#e5e7eb" stroke-width="3"/>
   
-  <!-- 책 페이지 라인들 -->
-  <line x1="67" y1="73" x2="125" y2="73" stroke="#8B5CF6" stroke-width="2"/>
-  <line x1="67" y1="88" x2="125" y2="88" stroke="#8B5CF6" stroke-width="2"/>
-  <line x1="67" y1="103" x2="125" y2="103" stroke="#8B5CF6" stroke-width="2"/>
-  <line x1="67" y1="118" x2="125" y2="118" stroke="#8B5CF6" stroke-width="2"/>
+  <!-- 책 표지 장식 -->
+  <rect x="180" y="200" width="152" height="200" rx="12" ry="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  
+  <!-- 귀여운 얼굴 -->
+  <!-- 눈 -->
+  <circle cx="220" cy="260" r="12" fill="#1f2937"/>
+  <circle cx="292" cy="260" r="12" fill="#1f2937"/>
+  <!-- 눈 하이라이트 -->
+  <circle cx="224" cy="256" r="4" fill="#ffffff"/>
+  <circle cx="296" cy="256" r="4" fill="#ffffff"/>
+  
+  <!-- 볼 -->
+  <circle cx="190" cy="280" r="8" fill="#fca5a5" opacity="0.6"/>
+  <circle cx="322" cy="280" r="8" fill="#fca5a5" opacity="0.6"/>
+  
+  <!-- 입 (미소) -->
+  <path d="M 230 290 Q 256 310 282 290" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
   
   <!-- 책 제목 영역 -->
-  <rect x="67" y="140" width="58" height="8" fill="#8B5CF6" rx="2"/>
+  <rect x="200" y="320" width="112" height="24" rx="12" ry="12" fill="#f59e0b"/>
+  <text x="256" y="338" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#ffffff">단어장</text>
+  
+  <!-- 귀여운 장식 하트들 -->
+  <g fill="#ec4899" opacity="0.7">
+    <!-- 하트 1 -->
+    <path d="M 380 180 C 380 170, 390 170, 390 180 C 390 170, 400 170, 400 180 C 400 190, 390 200, 390 200 C 390 200, 380 190, 380 180 Z"/>
+    <!-- 하트 2 -->
+    <path d="M 120 320 C 120 315, 125 315, 125 320 C 125 315, 130 315, 130 320 C 130 325, 125 330, 125 330 C 125 330, 120 325, 120 320 Z"/>
+  </g>
+  
+  <!-- 반짝이는 별들 -->
+  <g fill="#fbbf24" opacity="0.8">
+    <polygon points="140,160 143,167 150,167 145,172 147,179 140,175 133,179 135,172 130,167 137,167" />
+    <polygon points="370,350 372,355 377,355 374,358 375,363 370,360 365,363 366,358 363,355 368,355" />
+    <polygon points="380,120 382,125 387,125 384,128 385,133 380,130 375,133 376,128 373,125 378,125" />
+  </g>
+  
+  <!-- 작은 꽃 장식 -->
+  <g fill="#f472b6" opacity="0.6">
+    <circle cx="120" cy="200" r="3"/>
+    <circle cx="115" cy="195" r="2"/>
+    <circle cx="125" cy="195" r="2"/>
+    <circle cx="115" cy="205" r="2"/>
+    <circle cx="125" cy="205" r="2"/>
+  </g>
 </svg> 
