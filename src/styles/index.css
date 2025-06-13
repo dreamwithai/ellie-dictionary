@@ -4,11 +4,22 @@
   box-sizing: border-box;
 }
 
+/* 컬러 시스템: 파스텔톤(민트, 라벤더, 코럴, 블루그레이, 연회색, 연보라) */
+:root {
+  --color-mint: #A8E6CF;
+  --color-lavender: #B39DDB;
+  --color-coral: #FF6F61;
+  --color-bluegray: #374151;
+  --color-bg: #fff;
+  --color-bg-sub: #F8FAFC;
+  --color-border: #E0E7FF;
+}
+
 body {
   font-family: 'Noto Sans KR', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-bg-sub);
   min-height: 100vh;
-  color: #333;
+  color: var(--color-bluegray);
 }
 
 /* 모바일 최적화 */
@@ -39,35 +50,76 @@ body {
   border: none;
   border-radius: 25px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s, filter 0.2s, color 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 2px 8px rgba(55,65,81,0.06);
 }
 
-.btn-primary {
-  background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+.btn-mint {
+  background: var(--color-mint);
+  color: var(--color-bluegray);
+  border: 1px solid var(--color-border);
+}
+.btn-mint:hover {
+  filter: brightness(0.93);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+.btn-lavender-outline, .btn-lavender {
+  border-radius: 25px;
+  font-weight: 700;
+  font-family: 'SUIT', 'Pretendard', 'Noto Sans KR', sans-serif;
+  box-shadow: 0 2px 8px rgba(55,65,81,0.07);
+  padding: 10px 22px;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.btn-lavender-outline {
+  background: #fff;
+  color: var(--color-lavender);
+  border: 1px solid var(--color-lavender);
+}
+.btn-lavender-outline:hover {
+  background: #F3F4F6;
+}
+
+.btn-lavender {
+  background: var(--color-lavender);
+  color: #fff;
+  border: 1px solid var(--color-lavender);
+}
+.btn-lavender:hover {
+  filter: brightness(0.93);
+}
+
+.btn-lavender.active, .btn-lavender.selected, .btn-lavender:active {
+  background: #F3F4F6;
+  color: var(--color-bluegray);
+  border: 1px solid var(--color-border);
+}
+
+.btn-coral {
+  background: var(--color-coral);
+  color: #fff;
+  border: 1px solid var(--color-border);
+}
+.btn-coral:hover {
+  filter: brightness(0.93);
 }
 
 .btn-secondary {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
+  background: #fff;
+  color: var(--color-bluegray);
+  border: 1px solid var(--color-border);
 }
-
 .btn-secondary:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-2px);
+  background: var(--color-bg-sub);
+  filter: brightness(0.97);
 }
 
 .btn-small {
@@ -77,19 +129,17 @@ body {
 
 /* 카드 스타일 */
 .card {
-  background: white;
+  background: #fff;
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 32px rgba(55,65,81,0.08);
+  border: 1px solid var(--color-border);
+  margin-bottom: 12px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(55,65,81,0.13);
 }
 
 /* 폼 스타일 */
@@ -107,23 +157,29 @@ body {
 .form-control {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e1e5e9;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   font-size: 16px;
-  transition: all 0.3s ease;
-  background: white;
+  background: #fff;
+  color: var(--color-bluegray);
+  transition: border 0.2s, box-shadow 0.2s;
 }
-
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-lavender);
+  box-shadow: 0 0 0 3px rgba(179,157,219,0.10);
+}
+
+.search-input::placeholder, .form-control::placeholder, textarea::placeholder {
+  color: #bdbdbd !important;
+  opacity: 1 !important;
+  font-size: 14px;
 }
 
 /* 헤더 스타일 */
 .header {
   margin-bottom: 25px;
-  color: white;
+  color: var(--color-lavender);
 }
 
 .header-content {
@@ -189,15 +245,14 @@ body {
   font-size: 2em;
   font-weight: 700;
   margin-bottom: 5px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--color-lavender);
 }
 
 .header p {
   font-size: 0.95em;
   opacity: 0.9;
+  color: var(--color-bluegray);
 }
-
-
 
 /* 검색 바 */
 .search-bar {
@@ -366,4 +421,16 @@ body {
     min-width: 32px !important;
     padding: 6px !important;
   }
+}
+
+/* 구분선/라인 */
+.divider {
+  border-bottom: 1px solid var(--color-border);
+  margin: 16px 0;
+}
+
+.btn-lavender.btn-mint, .btn-mint.btn-lavender {
+  background: var(--color-mint) !important;
+  color: var(--color-bluegray) !important;
+  border: 1px solid var(--color-border) !important;
 } 

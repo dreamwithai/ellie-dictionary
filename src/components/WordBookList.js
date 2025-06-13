@@ -6,9 +6,14 @@ function WordBookList({ wordBooks, onViewWordBook, onDeleteWordBook }) {
   if (wordBooks.length === 0) {
     return (
       <div className="card" style={{ textAlign: 'center', padding: '60px 40px' }}>
-        <Book size={48} style={{ color: '#667eea', marginBottom: '20px' }} />
+        <div style={{ fontSize: '4.2em', fontWeight: 900, color: '#13204e', marginBottom: '36px', letterSpacing: '-2px', lineHeight: 1 }}>텅</div>
         <h3 style={{ marginBottom: '10px', color: '#666' }}>아직 단어장이 없습니다</h3>
-        <p style={{ color: '#999' }}>새 단어장을 만들어서 영어 공부를 시작해보세요!</p>
+        <p style={{ color: '#999', whiteSpace: 'pre-line' }}>
+          새 단어장을 만들어서
+          {'\n'}영어 공부를 시작해보세요!
+          <br />
+          <strong style={{ color: '#13204e', display: 'block', marginTop: 18, fontWeight: 700, fontSize: '1.1em' }}>YOU CAN DO IT !!</strong>
+        </p>
       </div>
     );
   }
@@ -24,7 +29,7 @@ function WordBookList({ wordBooks, onViewWordBook, onDeleteWordBook }) {
 
   return (
     <div>
-      <h2 style={{ marginBottom: '24px', color: 'white', textAlign: 'center' }}>
+      <h2 style={{ marginTop: '36px', marginBottom: '24px', color: '#13204e', textAlign: 'center', fontWeight: 800 }}>
         내 단어장 목록 ({wordBooks.length}개)
       </h2>
       
@@ -66,7 +71,7 @@ function WordBookList({ wordBooks, onViewWordBook, onDeleteWordBook }) {
               marginLeft: '16px'
             }}>
               <button
-                className="btn btn-secondary btn-small"
+                className="btn btn-small btn-mint"
                 onClick={() => onViewWordBook(wordBook)}
                 title="단어장 보기"
               >
@@ -75,16 +80,11 @@ function WordBookList({ wordBooks, onViewWordBook, onDeleteWordBook }) {
               </button>
               
               <button
-                className="btn btn-small"
+                className="btn btn-small btn-coral"
                 onClick={() => {
                   if (window.confirm('정말로 이 단어장을 삭제하시겠습니까?')) {
                     onDeleteWordBook(wordBook.id);
                   }
-                }}
-                style={{ 
-                  background: '#ff4757',
-                  color: 'white',
-                  border: 'none'
                 }}
                 title="단어장 삭제"
               >

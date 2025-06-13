@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Plus, Book, Edit3, Trash2, Eye, ArrowLeft, Settings, Home, Target } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Plus, Book, Edit3, Trash2, Eye, ArrowLeft, Settings, Home, Target, ArrowUp } from 'lucide-react';
 import WordBookList from './components/WordBookList';
 import WordBookDetail from './components/WordBookDetail';
 import CreateWordBook from './components/CreateWordBook';
@@ -16,6 +16,10 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallButton, setShowInstallButton] = useState(false);
+  const [headerImage, setHeaderImage] = useState(() => {
+    return localStorage.getItem('headerImage') || '';
+  });
+  const appRootRef = useRef(null);
 
   // 로컬 스토리지에서 데이터 로드
   useEffect(() => {
@@ -62,6 +66,15 @@ function App() {
   useEffect(() => {
     localStorage.setItem('ellieDictionary', JSON.stringify(wordBooks));
   }, [wordBooks]);
+
+  // 이미지 변경시 반영 (설정에서 업로드 시)
+  useEffect(() => {
+    const onStorage = () => {
+      setHeaderImage(localStorage.getItem('headerImage') || '');
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   // 단어장 생성
   const createWordBook = (wordBookData) => {
@@ -216,120 +229,168 @@ function App() {
     setDeferredPrompt(null);
   };
 
+  // 맨 위로 스크롤 함수
+  const scrollToTop = () => {
+    if (appRootRef.current) {
+      appRootRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // 자유의 여신상 SVG (간단 버전, 실제로는 별도 파일로 분리 가능)
+  const StatueOfLibertySVG = () => (
+    <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#fff" strokeWidth="2">
+        <path d="M44 44V30M44 30L41 24M44 30L47 24"/>
+        <path d="M41 24L44 18L47 24"/>
+        <circle cx="44" cy="16" r="2" fill="#fff"/>
+        <path d="M44 14V10"/>
+        <path d="M42 12L39 9"/>
+        <path d="M46 12L49 9"/>
+      </g>
+    </svg>
+  );
+
   return (
-    <div className="container">
-      <div className="header">
-        <div className="header-content">
-          {currentView !== 'list' && (
-            <button className="home-btn" onClick={goHome}>
-              <Home size={20} />
-            </button>
-          )}
-          <div className="header-text">
-            <h1>📚 엘리의 단어장</h1>
-            <p>영어 공부를 더 재미있게!</p>
+    <div className="app-root" ref={appRootRef} style={{ height: '100vh', overflowY: 'auto', background: '#f8fafc', padding: 0 }}>
+      {/* 전체 스크롤 영역: 헤더+검색+메뉴+컨텐츠 */}
+      <div style={{ background: '#13204e', boxShadow: '0 2px 12px #0002' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', minHeight: 100, padding: '0 20px', marginTop: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 32 }}>
+            <span style={{ color: '#fff', fontWeight: 800, fontSize: '1.45em', letterSpacing: '-1px', marginBottom: 1 }}>윤채사전</span>
+            <span style={{ color: '#cbd5e1', fontWeight: 400, fontSize: '0.92em', letterSpacing: '0.03em', opacity: 0.8, marginTop: 1 }}>ENGLISH DICTIONARY</span>
           </div>
-          <div className="header-spacer"></div>
+          {headerImage && (
+            <img src={headerImage} alt="프로필" style={{ width: 62, height: 62, borderRadius: '50%', objectFit: 'cover', border: '2.5px solid #fff', background: '#eee', marginTop: 38 }} />
+          )}
         </div>
       </div>
-
-      {/* 검색 바 */}
-      <div className="search-bar">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="영어 단어나 한글 뜻을 검색해보세요..."
-          value={searchQuery}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
-        <Search className="search-icon" size={24} />
-      </div>
-
-
-
-      {/* 메인 컨텐츠 */}
-      {currentView === 'list' && (
-        <>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: '12px',
-            marginBottom: '30px',
-            flexWrap: 'wrap'
-          }}>
-            <button 
-              className="btn btn-primary" 
-              onClick={() => setCurrentView('create')}
-            >
-              <Plus size={20} />
-              새 단어장 만들기
-            </button>
-            
-            <button 
-              className="btn btn-secondary" 
-              onClick={() => setCurrentView('test')}
-              disabled={wordBooks.length === 0}
-            >
-              <Target size={20} />
-              단어 테스트
-            </button>
-            
-            <button 
-              className="btn btn-secondary" 
-              onClick={() => setCurrentView('settings')}
-            >
-              <Settings size={20} />
-              백업 & 설정
-            </button>
+      <div style={{ background: '#13204e', boxShadow: '0 2px 12px #0002', paddingBottom: 16 }}>
+        {/* 검색바 */}
+        <div style={{ margin: '0 auto', maxWidth: 480 }}>
+          <div style={{ background: '#fff', borderRadius: 32, boxShadow: '0 2px 12px #0001', padding: '8px 16px', margin: '0 16px', display: 'flex', alignItems: 'center', gap: 8, transform: 'translateY(38px)' }}>
+            <Search size={22} color="#13204e" />
+            <input
+              type="text"
+              className="search-input"
+              placeholder="영어 단어나 한글 뜻을 검색해보세요..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              style={{ border: 'none', outline: 'none', fontSize: 17, flex: 1, background: '#fff', color: '#222', padding: 0 }}
+            />
           </div>
-          <WordBookList 
-            wordBooks={wordBooks}
-            onViewWordBook={viewWordBook}
-            onDeleteWordBook={deleteWordBook}
+        </div>
+        {/* 메뉴 버튼 */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 18, marginTop: 56, marginBottom: 8 }}>
+          <button
+            className="btn btn-mint"
+            onClick={goHome}
+          >
+            <Home size={22} style={{ marginBottom: 2 }} />
+          </button>
+          <button
+            className="btn btn-lavender"
+            onClick={() => setCurrentView('create')}
+          >
+            <Plus size={22} style={{ marginBottom: 2 }} />
+            NEW
+          </button>
+          <button
+            className="btn btn-mint"
+            onClick={() => setCurrentView('test')}
+            disabled={wordBooks.length === 0}
+          >
+            <Target size={22} style={{ marginBottom: 2 }} />
+            TEST
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setCurrentView('settings')}
+          >
+            <Settings size={22} style={{ marginBottom: 2 }} />
+          </button>
+        </div>
+      </div>
+      {/* 메인 컨텐츠 영역 */}
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+        {/* 메인 컨텐츠 */}
+        {currentView === 'list' && (
+          <>
+            <WordBookList 
+              wordBooks={wordBooks}
+              onViewWordBook={viewWordBook}
+              onDeleteWordBook={deleteWordBook}
+            />
+          </>
+        )}
+
+        {currentView === 'create' && (
+          <CreateWordBook 
+            onCreateWordBook={createWordBook}
+            onCancel={() => setCurrentView('list')}
           />
-        </>
-      )}
+        )}
 
-      {currentView === 'create' && (
-        <CreateWordBook 
-          onCreateWordBook={createWordBook}
-          onCancel={() => setCurrentView('list')}
-        />
-      )}
+        {currentView === 'detail' && selectedWordBook && (
+          <WordBookDetail 
+            wordBook={selectedWordBook}
+            onAddWord={addWord}
+            onDeleteWord={deleteWord}
+            onUpdateWord={updateWord}
+          />
+        )}
 
-      {currentView === 'detail' && selectedWordBook && (
-        <WordBookDetail 
-          wordBook={selectedWordBook}
-          onAddWord={addWord}
-          onDeleteWord={deleteWord}
-          onUpdateWord={updateWord}
-        />
-      )}
+        {currentView === 'search' && (
+          <SearchResults 
+            searchQuery={searchQuery}
+            searchResults={searchResults}
+            onViewWordBook={viewWordBook}
+          />
+        )}
 
-      {currentView === 'search' && (
-        <SearchResults 
-          searchQuery={searchQuery}
-          searchResults={searchResults}
-          onViewWordBook={viewWordBook}
-        />
-      )}
+        {currentView === 'settings' && (
+          <DataManager 
+            wordBooks={wordBooks}
+            onImportData={importData}
+          />
+        )}
 
-      {currentView === 'settings' && (
-        <DataManager 
-          wordBooks={wordBooks}
-          onImportData={importData}
-        />
-      )}
+        {currentView === 'test' && (
+          <WordTest 
+            wordBooks={wordBooks}
+            onBack={() => setCurrentView('list')}
+          />
+        )}
 
-      {currentView === 'test' && (
-        <WordTest 
-          wordBooks={wordBooks}
-          onBack={() => setCurrentView('list')}
-        />
-      )}
-
-      {/* 디버깅 정보 (개발 중에만 사용) */}
-      {/* <DebugInfo wordBooks={wordBooks} selectedWordBook={selectedWordBook} /> */}
+        {/* 디버깅 정보 (개발 중에만 사용) */}
+        {/* <DebugInfo wordBooks={wordBooks} selectedWordBook={selectedWordBook} /> */}
+      </div>
+      {/* 플로팅 맨 위로 버튼 */}
+      <button
+        onClick={scrollToTop}
+        style={{
+          position: 'fixed',
+          right: 24,
+          bottom: currentView === 'test' ? 90 : 28,
+          zIndex: 100,
+          background: 'linear-gradient(135deg, #A8E6CF 60%, #B39DDB 100%)',
+          color: '#374151',
+          border: 'none',
+          borderRadius: '50%',
+          width: 54,
+          height: 54,
+          boxShadow: '0 4px 16px rgba(55,65,81,0.13)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 28,
+          cursor: 'pointer',
+          transition: 'background 0.2s, box-shadow 0.2s',
+        }}
+        title="맨 위로"
+        aria-label="맨 위로"
+      >
+        <ArrowUp size={28} />
+      </button>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { calculateDataSize, checkBrowserLimits } from '../utils/dataSizeCalculat
 function DataManager({ wordBooks, onImportData }) {
   const [dataSizeInfo, setDataSizeInfo] = useState(null);
   const [compressionEnabled, setCompressionEnabled] = useState(false);
+  const [headerImage, setHeaderImage] = useState(localStorage.getItem('headerImage') || '');
 
   // 데이터 크기 계산
   useEffect(() => {
@@ -93,6 +94,24 @@ function DataManager({ wordBooks, onImportData }) {
     event.target.value = ''; // 파일 선택 초기화
   };
 
+  // 헤더 이미지 업로드 핸들러
+  const handleHeaderImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      localStorage.setItem('headerImage', ev.target.result);
+      setHeaderImage(ev.target.result);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const removeHeaderImage = () => {
+    localStorage.removeItem('headerImage');
+    setHeaderImage('');
+  };
+
   return (
     <div className="card">
       <h3 style={{ 
@@ -106,6 +125,34 @@ function DataManager({ wordBooks, onImportData }) {
         데이터 백업 & 복원
       </h3>
       
+      {/* 헤더 이미지 업로드 */}
+      <div style={{
+        background: '#f8f9fa',
+        padding: '16px',
+        borderRadius: '12px',
+        marginBottom: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '18px',
+        flexWrap: 'wrap'
+      }}>
+        <div>
+          <div style={{ fontWeight: 500, marginBottom: 8 }}>앱 상단 이미지(프로필/로고) 업로드</div>
+          <label className="btn btn-secondary" style={{ cursor: 'pointer', fontSize: '14px', padding: '7px 16px', marginRight: 8 }}>
+            이미지 선택
+            <input type="file" accept="image/*" onChange={handleHeaderImageChange} style={{ display: 'none' }} />
+          </label>
+          {headerImage && (
+            <button className="btn btn-small" style={{ background: '#eee', color: '#333', fontSize: '13px' }} onClick={removeHeaderImage}>
+              이미지 삭제
+            </button>
+          )}
+        </div>
+        {headerImage && (
+          <img src={headerImage} alt="미리보기" style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 2px 8px #0001', border: '1.5px solid #e5e7eb' }} />
+        )}
+      </div>
+
       <div style={{ 
         background: '#f8f9fa',
         padding: '16px',
@@ -117,7 +164,7 @@ function DataManager({ wordBooks, onImportData }) {
           alignItems: 'center',
           gap: '8px',
           marginBottom: '8px',
-          color: '#667eea'
+          color: '#13204e'
         }}>
           <AlertCircle size={16} />
           <span style={{ fontWeight: '500' }}>안전한 백업</span>
@@ -198,7 +245,7 @@ function DataManager({ wordBooks, onImportData }) {
       }}>
         {/* 내보내기 버튼 */}
         <button
-          className="btn btn-primary"
+          className="btn btn-mint"
           onClick={exportData}
           disabled={wordBooks.length === 0}
         >
@@ -207,11 +254,7 @@ function DataManager({ wordBooks, onImportData }) {
         </button>
 
         {/* 가져오기 버튼 */}
-        <label className="btn btn-secondary" style={{ 
-          cursor: 'pointer',
-          textAlign: 'center',
-          margin: 0
-        }}>
+        <label className="btn btn-lavender" style={{ cursor: 'pointer', textAlign: 'center', margin: 0 }}>
           <Upload size={18} />
           백업 파일 가져오기
           <input

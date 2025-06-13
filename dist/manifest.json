@@ -1,6 +1,6 @@
 {
-  "name": "엘리의 단어장",
-  "short_name": "엘리단어장",
+  "name": "윤채의 단어장",
+  "short_name": "윤채단어장",
   "description": "중학생을 위한 영어 단어장 앱",
   "start_url": "./?standalone=true",
   "display": "standalone",

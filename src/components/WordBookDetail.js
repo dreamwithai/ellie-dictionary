@@ -224,7 +224,7 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
             marginBottom: '20px'
           }}>
             <h3 style={{ 
-              color: 'white', 
+              color: '#13204e', 
               margin: 0,
               flex: 1,
               textAlign: 'center'
@@ -235,55 +235,25 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
               </span>
             </h3>
             
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px', marginLeft: '8px', marginRight: '8px' }}>
               <button
-                className="btn btn-secondary btn-small"
+                className="btn btn-secondary btn-small btn-lavender"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, minWidth: 60, justifyContent: 'center' }}
                 onClick={toggleAllEnglishVisibility}
-                style={{ 
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  border: '2px solid rgba(255, 255, 255, 0.3)',
-                  color: 'white',
-                  fontSize: '11px',
-                  padding: '4px 8px'
-                }}
                 title={hiddenEnglish.size === wordBook.words.length ? '모든 영어 보기' : '모든 영어 가리기'}
               >
-                {hiddenEnglish.size === wordBook.words.length ? (
-                  <>
-                    <Eye size={10} />
-                    영어
-                  </>
-                ) : (
-                  <>
-                    <EyeOff size={10} />
-                    영어
-                  </>
-                )}
+                <Eye size={16} style={{ marginRight: 2 }} />
+                영어
               </button>
               
               <button
-                className="btn btn-secondary btn-small"
+                className="btn btn-secondary btn-small btn-lavender"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, minWidth: 60, justifyContent: 'center', marginRight: 15 }}
                 onClick={toggleAllKoreanVisibility}
-                style={{ 
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  border: '2px solid rgba(255, 255, 255, 0.3)',
-                  color: 'white',
-                  fontSize: '11px',
-                  padding: '4px 8px'
-                }}
                 title={hiddenKorean.size === wordBook.words.length ? '모든 해석 보기' : '모든 해석 가리기'}
               >
-                {hiddenKorean.size === wordBook.words.length ? (
-                  <>
-                    <Eye size={10} />
-                    한글
-                  </>
-                ) : (
-                  <>
-                    <EyeOff size={10} />
-                    한글
-                  </>
-                )}
+                <Eye size={16} style={{ marginRight: 2 }} />
+                해석
               </button>
             </div>
           </div>
@@ -410,7 +380,7 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                         ) : (
                           <span style={{ 
                             fontSize: '18px',
-                            color: memorizedWords.has(word.id) ? '#999' : '#667eea',
+                            color: memorizedWords.has(word.id) ? '#999' : '#13204e',
                             fontWeight: '500',
                             textDecoration: memorizedWords.has(word.id) ? 'line-through' : 'none'
                           }}>
@@ -421,106 +391,56 @@ function WordBookDetail({ wordBook, onAddWord, onDeleteWord, onUpdateWord }) {
                       
                       {/* 체크 버튼 */}
                       <button
-                        className="btn btn-small"
+                        className="btn btn-small btn-mint"
                         onClick={() => toggleMemorized(word.id)}
-                        style={{ 
-                          background: memorizedWords.has(word.id) ? '#2ed573' : '#ddd',
-                          color: memorizedWords.has(word.id) ? 'white' : '#666',
-                          border: 'none',
-                          minWidth: '32px',
-                          height: '32px',
-                          fontSize: '12px',
-                          padding: '6px',
-                          borderRadius: '6px'
-                        }}
                         title={memorizedWords.has(word.id) ? '외움 해제' : '외움 체크'}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, minWidth: 36, marginRight: 4 }}
                       >
-                        <Check size={12} />
+                        <Check size={16} style={{ fontWeight: 700 }} />
                       </button>
                     </div>
                     
                     {/* 두 번째 줄: 기능 버튼들 */}
-                    <div style={{ 
-                      display: 'flex', 
-                      gap: '6px', 
+                    <div style={{
+                      display: 'flex',
+                      gap: '2px',
                       justifyContent: 'flex-end',
                       paddingTop: '8px',
                       borderTop: '1px solid #f0f0f0'
                     }}>
                       <button
-                        className="btn btn-small"
+                        className={`btn btn-small btn-lavender${hiddenEnglish.has(word.id) ? ' active' : ''}`}
                         onClick={() => toggleEnglishVisibility(word.id)}
-                        style={{ 
-                          background: hiddenEnglish.has(word.id) ? '#2ed573' : '#ffa502',
-                          color: 'white',
-                          border: 'none',
-                          minWidth: '32px',
-                          height: '28px',
-                          fontSize: '10px',
-                          padding: '4px',
-                          borderRadius: '4px'
-                        }}
                         title={hiddenEnglish.has(word.id) ? '영어 보기' : '영어 가리기'}
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, minWidth: 60, justifyContent: 'center', marginRight: 4 }}
                       >
-                        {hiddenEnglish.has(word.id) ? <Eye size={10} /> : <EyeOff size={10} />}
+                        <Eye size={16} style={{ marginRight: 2 }} />
+                        영어
                       </button>
-                      
                       <button
-                        className="btn btn-small"
+                        className={`btn btn-small btn-lavender${hiddenKorean.has(word.id) ? ' active' : ''}`}
                         onClick={() => toggleKoreanVisibility(word.id)}
-                        style={{ 
-                          background: hiddenKorean.has(word.id) ? '#2ed573' : '#ffa502',
-                          color: 'white',
-                          border: 'none',
-                          minWidth: '32px',
-                          height: '28px',
-                          fontSize: '10px',
-                          padding: '4px',
-                          borderRadius: '4px'
-                        }}
                         title={hiddenKorean.has(word.id) ? '한글 보기' : '한글 가리기'}
+                        style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, minWidth: 60, justifyContent: 'center', marginRight: 4 }}
                       >
-                        {hiddenKorean.has(word.id) ? <Eye size={10} /> : <EyeOff size={10} />}
+                        <Eye size={16} style={{ marginRight: 2 }} />
+                        해석
                       </button>
-                      
                       <button
-                        className="btn btn-small"
+                        className="btn btn-small btn-coral"
                         onClick={() => startEdit(word)}
-                        style={{ 
-                          background: '#3742fa',
-                          color: 'white',
-                          border: 'none',
-                          minWidth: '32px',
-                          height: '28px',
-                          fontSize: '10px',
-                          padding: '4px',
-                          borderRadius: '4px'
-                        }}
                         title="단어 수정"
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, minWidth: 36, marginRight: 4 }}
                       >
-                        <Edit3 size={10} />
+                        <Edit3 size={16} style={{ fontWeight: 700 }} />
                       </button>
-                      
                       <button
-                        className="btn btn-small"
-                        onClick={() => {
-                          if (window.confirm('이 단어를 삭제하시겠습니까?')) {
-                            onDeleteWord(wordBook.id, word.id);
-                          }
-                        }}
-                        style={{ 
-                          background: '#ff4757',
-                          color: 'white',
-                          border: 'none',
-                          minWidth: '32px',
-                          height: '28px',
-                          fontSize: '10px',
-                          padding: '4px',
-                          borderRadius: '4px'
-                        }}
+                        className="btn btn-small btn-coral"
+                        onClick={() => onDeleteWord(wordBook.id, word.id)}
                         title="단어 삭제"
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, minWidth: 36 }}
                       >
-                        <Trash2 size={10} />
+                        <Trash2 size={16} style={{ fontWeight: 700 }} />
                       </button>
                     </div>
                   </div>

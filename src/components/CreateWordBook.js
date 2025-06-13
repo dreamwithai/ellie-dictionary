@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, X } from 'lucide-react';
+import { Save, X, Home } from 'lucide-react';
 
 function CreateWordBook({ onCreateWordBook, onCancel }) {
   const [title, setTitle] = useState('');
@@ -21,9 +21,11 @@ function CreateWordBook({ onCreateWordBook, onCancel }) {
 
   return (
     <div className="card">
-      <h2 style={{ marginBottom: '24px', color: '#333', textAlign: 'center' }}>
-        ✨ 새 단어장 만들기
-      </h2>
+      <div style={{ marginBottom: '24px' }}>
+        <h2 style={{ color: '#333', textAlign: 'center', margin: 0 }}>
+          ✨ 새 단어장 만들기
+        </h2>
+      </div>
       
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -67,7 +69,7 @@ function CreateWordBook({ onCreateWordBook, onCancel }) {
         }}>
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-mint"
             disabled={title.trim() === ''}
           >
             <Save size={18} />

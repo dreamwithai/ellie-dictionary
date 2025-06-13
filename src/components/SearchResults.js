@@ -45,7 +45,7 @@ function SearchResults({ searchQuery, searchResults, onViewWordBook }) {
             🔍 검색 결과
           </h2>
           <p style={{ color: '#666', fontSize: '16px', marginBottom: '12px' }}>
-            '<strong style={{ color: '#667eea' }}>{searchQuery}</strong>'에 대한 검색 결과
+            '<strong style={{ color: '#13204e' }}>{searchQuery}</strong>'에 대한 검색 결과
           </p>
           <div style={{ 
             display: 'flex', 
@@ -140,7 +140,7 @@ function SearchResults({ searchQuery, searchResults, onViewWordBook }) {
                     <div>
                       <span style={{ 
                         fontSize: '14px',
-                        color: '#667eea',
+                        color: '#13204e',
                         fontWeight: '500'
                       }}>
                         {highlightText(word.korean, searchQuery)}

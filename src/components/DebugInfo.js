@@ -45,7 +45,7 @@ function DebugInfo({ wordBooks, selectedWordBook }) {
         <button 
           onClick={checkLocalStorage}
           style={{
-            background: '#667eea',
+            background: '#13204e',
             color: 'white',
             border: 'none',
             padding: '4px 8px',
