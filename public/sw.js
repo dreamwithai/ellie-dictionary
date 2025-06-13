@@ -1,18 +1,22 @@
-const CACHE_NAME = 'ellie-wordbook-v3';
+const CACHE_NAME = 'ellie-dictionary-v1';
 const urlsToCache = [
   '/',
+  '/index.html',
   '/bundle.js',
   '/manifest.json',
-  '/icons-192X192.png',
-  '/icon-512X512.png'
+  '/icons-192x192.png',
+  '/icon-512x512.png',
+  '/apple-touch-icon.png',
+  '/favicon-32x32.png',
+  '/favicon-16x16.png'
 ];
 
 // 설치 이벤트
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   console.log('Service Worker 설치 중...');
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
+      .then(cache => {
         console.log('캐시 열림');
         return cache.addAll(urlsToCache);
       })
@@ -40,32 +44,9 @@ self.addEventListener('activate', (event) => {
 });
 
 // 네트워크 요청 가로채기
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        // 캐시에서 찾으면 반환
-        if (response) {
-          return response;
-        }
-        
-        // 네트워크에서 가져오기
-        return fetch(event.request).then((response) => {
-          // 유효한 응답인지 확인
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // 응답 복사 (스트림은 한 번만 사용 가능)
-          const responseToCache = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-
-          return response;
-        });
-      })
+      .then(response => response || fetch(event.request))
   );
 }); 
