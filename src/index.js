@@ -13,7 +13,7 @@ root.render(
 // Service Worker 등록
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/ellie-dictionary/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then(registration => {
         console.log('Service Worker 등록 성공:', registration.scope);
       })

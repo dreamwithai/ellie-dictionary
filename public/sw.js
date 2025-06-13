@@ -1,14 +1,14 @@
 const CACHE_NAME = 'ellie-dictionary-v1';
 const urlsToCache = [
-  '/ellie-dictionary/',
-  '/ellie-dictionary/index.html',
-  '/ellie-dictionary/bundle.js',
-  '/ellie-dictionary/manifest.json',
-  '/ellie-dictionary/icons-192x192.png',
-  '/ellie-dictionary/icon-512x512.png',
-  '/ellie-dictionary/apple-touch-icon.png',
-  '/ellie-dictionary/favicon-32x32.png',
-  '/ellie-dictionary/favicon-16x16.png'
+  './',
+  './index.html',
+  './bundle.js',
+  './manifest.json',
+  './icons-192x192.png',
+  './icon-512x512.png',
+  './apple-touch-icon.png',
+  './favicon-32x32.png',
+  './favicon-16x16.png'
 ];
 
 // 설치 이벤트

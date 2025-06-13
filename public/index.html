@@ -7,10 +7,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="윤채의 단어장">
-    <link rel="manifest" href="/ellie-dictionary/manifest.json">
-    <link rel="apple-touch-icon" href="/ellie-dictionary/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/ellie-dictionary/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/ellie-dictionary/favicon-16x16.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
     <title>윤채의 단어장</title>
     
     <!-- Favicon -->
@@ -94,13 +94,13 @@
             </div>
         </div>
     </div>
-    <script src="/ellie-dictionary/bundle.js"></script>
+    <script src="./bundle.js"></script>
     
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/ellie-dictionary/sw.js')
+                navigator.serviceWorker.register('./sw.js')
                     .then(function(registration) {
                         console.log('SW registered: ', registration);
                     })
