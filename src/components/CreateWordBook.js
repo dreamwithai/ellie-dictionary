@@ -31,7 +31,7 @@ function CreateWordBook({ onCreateWordBook, onCancel }) {
 
   return (
     <div className="card">
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '30px' }}>
         <h2 style={{ color: '#333', textAlign: 'center', margin: 0 }}>
           ✨ 새 단어장 만들기
         </h2>

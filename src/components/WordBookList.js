@@ -28,8 +28,8 @@ function WordBookList({ wordBooks, onViewWordBook, onDeleteWordBook }) {
   };
 
   return (
-    <div>
-      <h2 style={{ marginTop: '36px', marginBottom: '24px', color: '#13204e', textAlign: 'center', fontWeight: 800 }}>
+    <div style={{ paddingTop: '20px' }}>
+      <h2 style={{ marginTop: 0, marginBottom: '30px', color: '#13204e', textAlign: 'center', fontWeight: 800 }}>
         내 단어장 목록 ({wordBooks.length}개)
       </h2>
       
