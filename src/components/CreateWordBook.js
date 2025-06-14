@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Save, X, Home } from 'lucide-react';
 
 function CreateWordBook({ onCreateWordBook, onCancel }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const titleInputRef = useRef(null);
+
+  // 모바일 키보드 대응: 포커스 시 input이 화면 중앙에 오도록 스크롤
+  const handleTitleFocus = () => {
+    if (window.innerWidth <= 600 && titleInputRef.current) {
+      setTimeout(() => {
+        titleInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200); // 키보드가 올라오는 시간 고려
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +48,8 @@ function CreateWordBook({ onCreateWordBook, onCancel }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={50}
+            ref={titleInputRef}
+            onFocus={handleTitleFocus}
           />
           <small style={{ color: '#888', fontSize: '14px' }}>
             {title.length}/50자

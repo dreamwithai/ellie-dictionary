@@ -13,6 +13,10 @@ function WordTest({ wordBooks, onBack }) {
 
   // 테스트 시작
   const startTest = () => {
+    if (!testMode) {
+      alert('테스트 모드를 선택해주세요! (영어→한글 또는 한글→영어)');
+      return;
+    }
     if (selectedWordBooks.size === 0) {
       alert('테스트할 단어장을 선택해주세요!');
       return;

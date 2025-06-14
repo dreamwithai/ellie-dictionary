@@ -365,32 +365,34 @@ function App() {
         {/* <DebugInfo wordBooks={wordBooks} selectedWordBook={selectedWordBook} /> */}
       </div>
       {/* 플로팅 맨 위로 버튼 */}
-      <button
-        onClick={scrollToTop}
-        style={{
-          position: 'fixed',
-          right: 24,
-          bottom: currentView === 'test' ? 90 : 28,
-          zIndex: 100,
-          background: 'linear-gradient(135deg, #A8E6CF 60%, #B39DDB 100%)',
-          color: '#374151',
-          border: 'none',
-          borderRadius: '50%',
-          width: 54,
-          height: 54,
-          boxShadow: '0 4px 16px rgba(55,65,81,0.13)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 28,
-          cursor: 'pointer',
-          transition: 'background 0.2s, box-shadow 0.2s',
-        }}
-        title="맨 위로"
-        aria-label="맨 위로"
-      >
-        <ArrowUp size={28} />
-      </button>
+      {(currentView !== 'create' && currentView !== 'settings') && (
+        <button
+          onClick={scrollToTop}
+          style={{
+            position: 'fixed',
+            right: 24,
+            bottom: currentView === 'test' ? 90 : 28,
+            zIndex: 100,
+            background: 'linear-gradient(135deg, #A8E6CF 60%, #B39DDB 100%)',
+            color: '#374151',
+            border: 'none',
+            borderRadius: '50%',
+            width: 54,
+            height: 54,
+            boxShadow: '0 4px 16px rgba(55,65,81,0.13)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 28,
+            cursor: 'pointer',
+            transition: 'background 0.2s, box-shadow 0.2s',
+          }}
+          title="맨 위로"
+          aria-label="맨 위로"
+        >
+          <ArrowUp size={28} />
+        </button>
+      )}
     </div>
   );
 }
