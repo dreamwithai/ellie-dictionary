@@ -54,7 +54,20 @@ function WordTest({ wordBooks, onBack }) {
   const submitAnswer = () => {
     const currentWord = testWords[currentWordIndex];
     const correctAnswer = testMode === 'english-to-korean' ? currentWord.korean : currentWord.english;
-    const isCorrect = userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase();
+    // 여러 정답(콤마, 슬래시, 세미콜론 등으로 구분) 지원
+    const correctAnswers = correctAnswer
+      .split(/[,/;|]/)
+      .map(a => a.trim().toLowerCase())
+      .filter(a => a.length > 0);
+    let user = userAnswer.trim().toLowerCase();
+    // 영->한 문제는 띄어쓰기 무시
+    let isCorrect;
+    if (testMode === 'english-to-korean') {
+      user = user.replace(/\s+/g, '');
+      isCorrect = correctAnswers.some(ans => ans.replace(/\s+/g, '') === user);
+    } else {
+      isCorrect = correctAnswers.some(ans => ans === user);
+    }
 
     const result = {
       word: currentWord,
