@@ -7,10 +7,14 @@ import SearchResults from './components/SearchResults';
 import DataManager from './components/DataManager';
 import DebugInfo from './components/DebugInfo';
 import WordTest from './components/WordTest';
+import SentenceTest from './components/SentenceTest';
+import SentenceManager from './components/SentenceManager';
+import SentenceBookList from './components/SentenceBookList';
+import SentenceBookDetail from './components/SentenceBookDetail';
 
 function App() {
   const [wordBooks, setWordBooks] = useState([]);
-  const [currentView, setCurrentView] = useState('list'); // 'list', 'detail', 'create', 'search', 'settings', 'test'
+  const [currentView, setCurrentView] = useState('list'); // 'list', 'detail', 'create', 'search', 'settings', 'test', 'wordTest', 'sentenceTest', 'sentence', 'sentenceBooks', 'sentenceBookDetail'
   const [selectedWordBook, setSelectedWordBook] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -19,6 +23,9 @@ function App() {
   const [headerImage, setHeaderImage] = useState(() => {
     return localStorage.getItem('headerImage') || '';
   });
+  const [sentences, setSentences] = useState([]); // 전체 문장 관리
+  const [sentenceBooks, setSentenceBooks] = useState([]); // 문장북 리스트
+  const [selectedSentenceBook, setSelectedSentenceBook] = useState(null);
   const appRootRef = useRef(null);
 
   // 로컬 스토리지에서 데이터 로드
@@ -26,6 +33,11 @@ function App() {
     const savedWordBooks = localStorage.getItem('ellieDictionary');
     if (savedWordBooks) {
       setWordBooks(JSON.parse(savedWordBooks));
+    }
+    
+    const savedSentenceBooks = localStorage.getItem('ellieSentenceBooks');
+    if (savedSentenceBooks) {
+      setSentenceBooks(JSON.parse(savedSentenceBooks));
     }
   }, []);
 
@@ -66,6 +78,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('ellieDictionary', JSON.stringify(wordBooks));
   }, [wordBooks]);
+
+  // 문장북 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem('ellieSentenceBooks', JSON.stringify(sentenceBooks));
+  }, [sentenceBooks]);
 
   // 이미지 변경시 반영 (설정에서 업로드 시)
   useEffect(() => {
@@ -202,7 +219,28 @@ function App() {
       mergedWordBooks.push(newWordBook);
     });
     
-        setWordBooks(mergedWordBooks);
+    setWordBooks(mergedWordBooks);
+  };
+
+  // 문장북 데이터 가져오기
+  const importSentenceData = (importedSentenceBooks) => {
+    const mergedSentenceBooks = [...sentenceBooks];
+    
+    importedSentenceBooks.forEach(importedBook => {
+      // ID 충돌 방지를 위해 새로운 ID 생성
+      const newId = Date.now() + Math.random();
+      const newSentenceBook = {
+        ...importedBook,
+        id: newId,
+        sentences: (importedBook.sentences || []).map(sentence => ({
+          ...sentence,
+          id: Date.now() + Math.random()
+        }))
+      };
+      mergedSentenceBooks.push(newSentenceBook);
+    });
+    
+    setSentenceBooks(mergedSentenceBooks);
   };
 
   // 홈으로 가기
@@ -213,6 +251,7 @@ function App() {
     }
     setCurrentView('list');
     setSelectedWordBook(null);
+    setSelectedSentenceBook(null);
   };
 
   // PWA 설치 처리
@@ -292,12 +331,19 @@ function App() {
             onClick={() => setCurrentView('create')}
           >
             <Plus size={22} style={{ marginBottom: 2 }} />
-            NEW
+            단어
+          </button>
+          <button
+            className="btn btn-lavender"
+            onClick={() => { setCurrentView('sentenceBooks'); setSelectedSentenceBook(null); }}
+          >
+            <Plus size={22} style={{ marginBottom: 2 }} />
+            문장
           </button>
           <button
             className="btn btn-mint"
             onClick={() => setCurrentView('test')}
-            disabled={wordBooks.length === 0}
+            disabled={wordBooks.length === 0 && sentenceBooks.length === 0}
           >
             <Target size={22} style={{ marginBottom: 2 }} />
             TEST
@@ -319,6 +365,12 @@ function App() {
               wordBooks={wordBooks}
               onViewWordBook={viewWordBook}
               onDeleteWordBook={deleteWordBook}
+            />
+            <SentenceBookList
+              sentenceBooks={sentenceBooks}
+              setSentenceBooks={setSentenceBooks}
+              onView={book => { setSelectedSentenceBook(book); setCurrentView('sentenceBookDetail'); }}
+              hideAddButton={true}
             />
           </>
         )}
@@ -350,14 +402,83 @@ function App() {
         {currentView === 'settings' && (
           <DataManager 
             wordBooks={wordBooks}
+            sentenceBooks={sentenceBooks}
             onImportData={importData}
+            onImportSentenceData={importSentenceData}
           />
         )}
 
         {currentView === 'test' && (
+          <div className="card" style={{ maxWidth: 480, margin: '32px auto', padding: 24 }}>
+            <button className="btn btn-secondary" onClick={goHome} style={{ marginBottom: 16 }}>← 홈으로</button>
+            <h2 style={{ marginBottom: 24, textAlign: 'center' }}>테스트 선택</h2>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <button
+                className="btn btn-mint"
+                onClick={() => setCurrentView('wordTest')}
+                disabled={wordBooks.length === 0}
+                style={{ padding: '20px', fontSize: '16px', fontWeight: '500' }}
+              >
+                <Target size={24} style={{ marginBottom: 8 }} />
+                단어 테스트
+                <div style={{ fontSize: '14px', opacity: 0.8, marginTop: 4 }}>
+                  단어장의 단어들로 테스트
+                </div>
+              </button>
+              
+              <button
+                className="btn btn-lavender"
+                onClick={() => setCurrentView('sentenceTest')}
+                disabled={sentenceBooks.length === 0}
+                style={{ padding: '20px', fontSize: '16px', fontWeight: '500' }}
+              >
+                <Target size={24} style={{ marginBottom: 8 }} />
+                문장 테스트
+                <div style={{ fontSize: '14px', opacity: 0.8, marginTop: 4 }}>
+                  문장북의 문장으로 테스트
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {currentView === 'wordTest' && (
           <WordTest 
             wordBooks={wordBooks}
+            onBack={() => setCurrentView('test')}
+          />
+        )}
+
+        {currentView === 'sentenceTest' && (
+          <SentenceTest 
+            sentenceBooks={sentenceBooks}
+            onBack={() => setCurrentView('test')}
+          />
+        )}
+
+        {currentView === 'sentence' && (
+          <SentenceManager 
+            sentences={sentences}
+            setSentences={setSentences}
             onBack={() => setCurrentView('list')}
+          />
+        )}
+
+        {currentView === 'sentenceBooks' && !selectedSentenceBook && (
+          <SentenceBookList
+            sentenceBooks={sentenceBooks}
+            setSentenceBooks={setSentenceBooks}
+            onView={book => { setSelectedSentenceBook(book); setCurrentView('sentenceBookDetail'); }}
+          />
+        )}
+
+        {currentView === 'sentenceBookDetail' && selectedSentenceBook && (
+          <SentenceBookDetail
+            sentenceBook={selectedSentenceBook}
+            setSentenceBooks={setSentenceBooks}
+            sentenceBooks={sentenceBooks}
+            onBack={() => { setCurrentView('sentenceBooks'); setSelectedSentenceBook(null); }}
           />
         )}
 

@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Upload, Save, AlertCircle, HardDrive, Zap } from 'lucide-react';
+import { Download, Upload, Save, AlertCircle, HardDrive, Zap, FileText, Plus } from 'lucide-react';
 import { calculateDataSize, checkBrowserLimits } from '../utils/dataSizeCalculator';
 
-function DataManager({ wordBooks, onImportData }) {
+function DataManager({ wordBooks, sentenceBooks, onImportData, onImportSentenceData }) {
   const [dataSizeInfo, setDataSizeInfo] = useState(null);
   const [compressionEnabled, setCompressionEnabled] = useState(false);
   const [headerImage, setHeaderImage] = useState(localStorage.getItem('headerImage') || '');
+  const [showSentenceJsonInput, setShowSentenceJsonInput] = useState(false);
+  const [sentenceJsonInput, setSentenceJsonInput] = useState('');
+  const [activeTab, setActiveTab] = useState('wordbooks'); // 'wordbooks' or 'sentencebooks'
 
   // 데이터 크기 계산
   useEffect(() => {
-    if (wordBooks.length > 0) {
-      const sizeInfo = calculateDataSize(wordBooks);
+    if (wordBooks.length > 0 || sentenceBooks.length > 0) {
+      const allData = { wordBooks, sentenceBooks };
+      const sizeInfo = calculateDataSize(allData);
       const limits = checkBrowserLimits(sizeInfo.bytes);
       setDataSizeInfo({ ...sizeInfo, ...limits });
     }
-  }, [wordBooks]);
+  }, [wordBooks, sentenceBooks]);
 
   // 데이터 압축 함수 (간단한 JSON 최적화)
   const compressData = (data) => {
@@ -38,7 +42,8 @@ function DataManager({ wordBooks, onImportData }) {
       exportDate: new Date().toISOString(),
       version: '1.0',
       compressed: compressionEnabled,
-      wordBooks: wordBooks
+      wordBooks: wordBooks,
+      sentenceBooks: sentenceBooks
     };
     
     // 압축 여부에 따라 다르게 처리
@@ -53,7 +58,7 @@ function DataManager({ wordBooks, onImportData }) {
     
     const link = document.createElement('a');
     link.href = URL.createObjectURL(dataBlob);
-    link.download = `엘리의_단어장_백업_${new Date().toISOString().split('T')[0]}${compressionEnabled ? '_compressed' : ''}.json`;
+    link.download = `엘리의_학습장_백업_${new Date().toISOString().split('T')[0]}${compressionEnabled ? '_compressed' : ''}.json`;
     link.click();
     
     URL.revokeObjectURL(link.href);
@@ -63,25 +68,43 @@ function DataManager({ wordBooks, onImportData }) {
   const importData = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
         const importedData = JSON.parse(e.target.result);
-        
-        // 데이터 유효성 검사
-        if (!importedData.wordBooks || !Array.isArray(importedData.wordBooks)) {
+        // 새 분기: 배열로 시작하면 sentenceBooks로 간주
+        if (Array.isArray(importedData)) {
+          const confirmImport = window.confirm(
+            `${importedData.length}개의 문장북을 가져오시겠습니까?\n현재 문장북 데이터와 합쳐집니다.`
+          );
+          if (confirmImport) {
+            onImportSentenceData(importedData);
+            alert('문장북을 성공적으로 가져왔습니다! 🎉');
+          }
+          return;
+        }
+        // 기존: 전체 백업 객체
+        if (!importedData.wordBooks && !importedData.sentenceBooks) {
           alert('올바르지 않은 파일 형식입니다.');
           return;
         }
-        
+        let importMessage = '';
+        if (importedData.wordBooks && Array.isArray(importedData.wordBooks)) {
+          importMessage += `${importedData.wordBooks.length}개의 단어장\n`;
+        }
+        if (importedData.sentenceBooks && Array.isArray(importedData.sentenceBooks)) {
+          importMessage += `${importedData.sentenceBooks.length}개의 문장북\n`;
+        }
         const confirmImport = window.confirm(
-          `${importedData.wordBooks.length}개의 단어장을 가져오시겠습니까?\n` +
-          `현재 데이터와 합쳐집니다.`
+          `${importMessage}을(를) 가져오시겠습니까?\n현재 데이터와 합쳐집니다.`
         );
-        
         if (confirmImport) {
-          onImportData(importedData.wordBooks);
+          if (importedData.wordBooks) {
+            onImportData(importedData.wordBooks);
+          }
+          if (importedData.sentenceBooks) {
+            onImportSentenceData(importedData.sentenceBooks);
+          }
           alert('데이터를 성공적으로 가져왔습니다! 🎉');
         }
       } catch (error) {
@@ -89,9 +112,46 @@ function DataManager({ wordBooks, onImportData }) {
         console.error('Import error:', error);
       }
     };
-    
     reader.readAsText(file);
-    event.target.value = ''; // 파일 선택 초기화
+    event.target.value = '';
+  };
+
+  // 문장북 JSON 직접 입력 처리
+  const handleSentenceJsonImport = () => {
+    try {
+      const parsedData = JSON.parse(sentenceJsonInput);
+      
+      if (!Array.isArray(parsedData)) {
+        alert('JSON 데이터는 배열 형태여야 합니다.');
+        return;
+      }
+      
+      // 문장북 데이터 구조 검증
+      const validData = parsedData.filter(item => 
+        item.title && 
+        (item.sentences === undefined || Array.isArray(item.sentences))
+      );
+      
+      if (validData.length === 0) {
+        alert('올바른 문장북 데이터가 없습니다. 각 항목에 title이 필요합니다.');
+        return;
+      }
+      
+      const confirmImport = window.confirm(
+        `${validData.length}개의 문장북을 가져오시겠습니까?\n` +
+        `현재 문장북 데이터와 합쳐집니다.`
+      );
+      
+      if (confirmImport) {
+        onImportSentenceData(validData);
+        setSentenceJsonInput('');
+        setShowSentenceJsonInput(false);
+        alert('문장북을 성공적으로 가져왔습니다! 🎉');
+      }
+    } catch (error) {
+      alert('JSON 형식이 올바르지 않습니다.');
+      console.error('JSON parse error:', error);
+    }
   };
 
   // 헤더 이미지 업로드 핸들러
@@ -175,7 +235,7 @@ function DataManager({ wordBooks, onImportData }) {
           lineHeight: '1.5',
           margin: 0
         }}>
-          중요한 단어장 데이터를 파일로 저장하고, 다른 기기에서도 사용할 수 있어요!
+          중요한 단어장과 문장북 데이터를 파일로 저장하고, 다른 기기에서도 사용할 수 있어요!
         </p>
       </div>
 
@@ -207,75 +267,254 @@ function DataManager({ wordBooks, onImportData }) {
         </div>
       )}
 
-      {/* 압축 옵션 */}
-      {wordBooks.length > 0 && (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginBottom: '16px',
-          padding: '12px',
-          background: '#f8f9fa',
-          borderRadius: '8px'
-        }}>
-          <input
-            type="checkbox"
-            id="compression"
-            checked={compressionEnabled}
-            onChange={(e) => setCompressionEnabled(e.target.checked)}
-            style={{ marginRight: '4px' }}
-          />
-          <label htmlFor="compression" style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '6px',
-            fontSize: '14px',
-            cursor: 'pointer'
-          }}>
-            <Zap size={14} />
-            압축 백업 (파일 크기 줄이기)
-          </label>
-        </div>
-      )}
-
-      <div style={{ 
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '12px'
+      {/* 탭 네비게이션 */}
+      <div style={{
+        display: 'flex',
+        borderBottom: '1px solid #eee',
+        marginBottom: '20px'
       }}>
-        {/* 내보내기 버튼 */}
         <button
-          className="btn btn-mint"
-          onClick={exportData}
-          disabled={wordBooks.length === 0}
+          onClick={() => setActiveTab('wordbooks')}
+          style={{
+            padding: '12px 20px',
+            border: 'none',
+            background: activeTab === 'wordbooks' ? '#6c63ff' : 'transparent',
+            color: activeTab === 'wordbooks' ? 'white' : '#666',
+            cursor: 'pointer',
+            borderBottom: activeTab === 'wordbooks' ? '2px solid #6c63ff' : 'none',
+            fontWeight: activeTab === 'wordbooks' ? '500' : 'normal'
+          }}
         >
-          <Download size={18} />
-          백업 파일 다운로드
+          단어장 ({wordBooks.length})
         </button>
-
-        {/* 가져오기 버튼 */}
-        <label className="btn btn-lavender" style={{ cursor: 'pointer', textAlign: 'center', margin: 0 }}>
-          <Upload size={18} />
-          백업 파일 가져오기
-          <input
-            type="file"
-            accept=".json"
-            onChange={importData}
-            style={{ display: 'none' }}
-          />
-        </label>
+        <button
+          onClick={() => setActiveTab('sentencebooks')}
+          style={{
+            padding: '12px 20px',
+            border: 'none',
+            background: activeTab === 'sentencebooks' ? '#6c63ff' : 'transparent',
+            color: activeTab === 'sentencebooks' ? 'white' : '#666',
+            cursor: 'pointer',
+            borderBottom: activeTab === 'sentencebooks' ? '2px solid #6c63ff' : 'none',
+            fontWeight: activeTab === 'sentencebooks' ? '500' : 'normal'
+          }}
+        >
+          문장북 ({sentenceBooks.length})
+        </button>
       </div>
 
-      {wordBooks.length === 0 && (
-        <p style={{ 
-          color: '#999',
-          fontSize: '14px',
-          textAlign: 'center',
-          marginTop: '12px',
-          marginBottom: 0
-        }}>
-          단어장이 없어서 백업할 데이터가 없습니다.
-        </p>
+      {/* 단어장 탭 */}
+      {activeTab === 'wordbooks' && (
+        <>
+          {/* 압축 옵션 */}
+          {wordBooks.length > 0 && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '16px',
+              padding: '12px',
+              background: '#f8f9fa',
+              borderRadius: '8px'
+            }}>
+              <input
+                type="checkbox"
+                id="compression"
+                checked={compressionEnabled}
+                onChange={(e) => setCompressionEnabled(e.target.checked)}
+                style={{ marginRight: '4px' }}
+              />
+              <label htmlFor="compression" style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '6px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}>
+                <Zap size={14} />
+                압축 백업 (파일 크기 줄이기)
+              </label>
+            </div>
+          )}
+
+          <div style={{ 
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '12px'
+          }}>
+            {/* 내보내기 버튼 */}
+            <button
+              className="btn btn-mint"
+              onClick={exportData}
+              disabled={wordBooks.length === 0 && sentenceBooks.length === 0}
+            >
+              <Download size={18} />
+              백업 파일 다운로드
+            </button>
+
+            {/* 가져오기 버튼 */}
+            <label className="btn btn-lavender" style={{ cursor: 'pointer', textAlign: 'center', margin: 0 }}>
+              <Upload size={18} />
+              백업 파일 가져오기
+              <input
+                type="file"
+                accept=".json"
+                onChange={importData}
+                style={{ display: 'none' }}
+              />
+            </label>
+          </div>
+
+          {(wordBooks.length === 0 && sentenceBooks.length === 0) && (
+            <p style={{ 
+              color: '#999',
+              fontSize: '14px',
+              textAlign: 'center',
+              marginTop: '12px',
+              marginBottom: 0
+            }}>
+              단어장과 문장북이 없어서 백업할 데이터가 없습니다.
+            </p>
+          )}
+        </>
+      )}
+
+      {/* 문장북 탭 */}
+      {activeTab === 'sentencebooks' && (
+        <>
+          <div style={{
+            background: '#f0f9ff',
+            padding: '16px',
+            borderRadius: '12px',
+            marginBottom: '20px',
+            border: '1px solid #bae6fd'
+          }}>
+            <div style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '8px',
+              color: '#0369a1'
+            }}>
+              <FileText size={16} />
+              <span style={{ fontWeight: '500' }}>문장북 JSON 가져오기</span>
+            </div>
+            <p style={{ 
+              color: '#666',
+              fontSize: '14px',
+              lineHeight: '1.5',
+              margin: 0,
+              marginBottom: '12px'
+            }}>
+              JSON 형식으로 문장북 데이터를 대량으로 가져올 수 있어요!
+            </p>
+            
+            {!showSentenceJsonInput ? (
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowSentenceJsonInput(true)}
+                style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
+                <Plus size={16} />
+                JSON으로 문장북 가져오기
+              </button>
+            ) : (
+              <div>
+                <textarea
+                  value={sentenceJsonInput}
+                  onChange={(e) => setSentenceJsonInput(e.target.value)}
+                  placeholder={`[
+  {
+    "title": "기본 인사말",
+    "description": "일상적인 인사말 문장들",
+    "sentences": [
+      {
+        "speaker": "Tom",
+        "english": "How are you today?",
+        "korean": "오늘 어떻게 지내?",
+        "blanks": [0, 2, 4]
+      },
+      {
+        "english": "Nice to meet you.",
+        "korean": "만나서 반가워.",
+        "blanks": [0, 3]
+      }
+    ]
+  }
+]`}
+                  style={{
+                    width: '100%',
+                    minHeight: '200px',
+                    padding: '12px',
+                    border: '1px solid #ddd',
+                    borderRadius: '8px',
+                    fontFamily: 'monospace',
+                    fontSize: '13px',
+                    marginBottom: '12px'
+                  }}
+                />
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleSentenceJsonImport}
+                    disabled={!sentenceJsonInput.trim()}
+                  >
+                    가져오기
+                  </button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      setShowSentenceJsonInput(false);
+                      setSentenceJsonInput('');
+                    }}
+                  >
+                    취소
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div style={{ 
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '12px'
+          }}>
+            {/* 내보내기 버튼 */}
+            <button
+              className="btn btn-mint"
+              onClick={exportData}
+              disabled={sentenceBooks.length === 0}
+            >
+              <Download size={18} />
+              문장북 백업 다운로드
+            </button>
+
+            {/* 가져오기 버튼 */}
+            <label className="btn btn-lavender" style={{ cursor: 'pointer', textAlign: 'center', margin: 0 }}>
+              <Upload size={18} />
+              문장북 백업 가져오기
+              <input
+                type="file"
+                accept=".json"
+                onChange={importData}
+                style={{ display: 'none' }}
+              />
+            </label>
+          </div>
+
+          {sentenceBooks.length === 0 && (
+            <p style={{ 
+              color: '#999',
+              fontSize: '14px',
+              textAlign: 'center',
+              marginTop: '12px',
+              marginBottom: 0
+            }}>
+              문장북이 없어서 백업할 데이터가 없습니다.
+            </p>
+          )}
+        </>
       )}
     </div>
   );
