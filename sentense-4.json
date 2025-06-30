@@ -1,0 +1,81 @@
+[
+  {
+    "title": "Lesson 4",
+    "description": "Listen and Speak 1-1",
+    "sentences": [
+      {
+        "speaker": "B",
+        "english": "Bomi, what do you do in your free time?",
+        "korean": "보미야, 너는 여가 시간에 무엇을 하니?",
+        "blanks": [1, 2, 3, 4]
+      },
+      {
+        "speaker": "G",
+        "english": "I often bake cookies. How about you, Tony?",
+        "korean": "나는 종종 쿠키를 구워. 너는 어때, Tony?",
+        "blanks": [1]
+      },
+      {
+        "speaker": "B",
+        "english": "I usually watch movies.",
+        "korean": "나는 보통 영화를 봐.",
+        "blanks": [0, 1, 2, 3]
+      }
+    ]
+  },
+ {
+    "title": "Lesson 4",
+    "description": "Listen and Speak 1-2",
+    "sentences": [
+      {
+        "speaker": "G",
+        "english": "I'm so happy. It's Friday!",
+        "korean": "나는 정말 기뻐. 금요일이야!",
+        "blanks": [3]
+      },
+      {
+        "speaker": "B",
+        "english": What are you going to do on the weekend, Jean?",
+        "korean": "주말에 무엇을 할 거니, Jean?",
+        "blanks": [0, 1, 2, 3, 4, 5]
+      },
+      {
+        "speaker": "G",
+        "english": "I'm going to play badminton.",
+        "korean": "나는 보통 영화를 봐.",
+        "blanks": [3, 4]
+      },
+      {
+        "speaker": "B",
+        "english": "Do you play badminton often?",
+        "korean": "배드민턴을 자주 치니?",
+        "blanks": [4]
+      },
+      {
+        "speaker": "G",
+        "english": "Yes, It's my favorite free time activity.",
+        "korean": "나는 보통 영화를 봐.",
+        "blanks": [2, 3]
+      },
+      {
+        "speaker": "B",
+        "english": "Who do you usually play with?",
+        "korean": "보통 누구랑 치니?",
+        "blanks": [0, 5]
+      },
+      {
+        "speaker": "G",
+        "english": "My dad. What do you do in your free time?",
+        "korean": "우리 아빠랑. 너는 여가 시간에 무엇을 하니?",
+        "blanks": [2, 3, 4, 5, 6, 7, 8, 9]
+      },
+      {
+        "speaker": "B",
+        "english": "I often go to the Han River and ride my bike.",
+        "korean": "나는 종종 한강에 가서 자전거를 타.",
+        "blanks": [0, 1, 2]
+      }
+    ]
+  }
+
+]
