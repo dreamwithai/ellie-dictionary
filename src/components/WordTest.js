@@ -247,7 +247,9 @@ function WordTest({ wordBooks, onBack }) {
                   color: '#333',
                   marginBottom: '8px'
                 }}>
-                  {testWords[currentWordIndex].english}
+                  {testMode === 'english-to-korean'
+                    ? testWords[currentWordIndex].english
+                    : testWords[currentWordIndex].korean}
                 </div>
                 <div style={{ fontSize: '12px', color: '#999' }}>
                   출처: {testWords[currentWordIndex].bookTitle}

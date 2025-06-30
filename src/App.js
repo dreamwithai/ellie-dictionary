@@ -319,16 +319,31 @@ function App() {
           </div>
         </div>
         {/* 메뉴 버튼 */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 18, marginTop: 56, marginBottom: 8 }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 12,
+          marginTop: 56,
+          marginBottom: 8,
+          flexWrap: 'nowrap',
+          overflowX: 'auto',
+          padding: '0 8px',
+          maxWidth: 420,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
           <button
             className="btn btn-mint"
             onClick={goHome}
+            style={{ minWidth: 56 }}
           >
             <Home size={22} style={{ marginBottom: 2 }} />
           </button>
           <button
             className="btn btn-lavender"
             onClick={() => setCurrentView('create')}
+            style={{ minWidth: 72 }}
           >
             <Plus size={22} style={{ marginBottom: 2 }} />
             단어
@@ -336,6 +351,7 @@ function App() {
           <button
             className="btn btn-lavender"
             onClick={() => { setCurrentView('sentenceBooks'); setSelectedSentenceBook(null); }}
+            style={{ minWidth: 72 }}
           >
             <Plus size={22} style={{ marginBottom: 2 }} />
             문장
@@ -344,6 +360,7 @@ function App() {
             className="btn btn-mint"
             onClick={() => setCurrentView('test')}
             disabled={wordBooks.length === 0 && sentenceBooks.length === 0}
+            style={{ minWidth: 72 }}
           >
             <Target size={22} style={{ marginBottom: 2 }} />
             TEST
@@ -351,6 +368,7 @@ function App() {
           <button
             className="btn btn-secondary"
             onClick={() => setCurrentView('settings')}
+            style={{ minWidth: 56 }}
           >
             <Settings size={22} style={{ marginBottom: 2 }} />
           </button>
