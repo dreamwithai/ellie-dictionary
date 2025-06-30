@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ellie-dictionary-v1';
+const CACHE_NAME = 'ellie-dictionary-v2';
 const urlsToCache = [
   './',
   './index.html',
