@@ -12,12 +12,14 @@ import SentenceManager from './components/SentenceManager';
 import SentenceBookList from './components/SentenceBookList';
 import SentenceBookDetail from './components/SentenceBookDetail';
 
+const APP_VERSION = '3';
+
 function App() {
   const [wordBooks, setWordBooks] = useState([]);
   const [currentView, setCurrentView] = useState('list'); // 'list', 'detail', 'create', 'search', 'settings', 'test', 'wordTest', 'sentenceTest', 'sentence', 'sentenceBooks', 'sentenceBookDetail'
   const [selectedWordBook, setSelectedWordBook] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState({ wordResults: [], sentenceResults: [] });
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallButton, setShowInstallButton] = useState(false);
   const [headerImage, setHeaderImage] = useState(() => {
@@ -171,27 +173,42 @@ function App() {
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query.trim() === '') {
-      setSearchResults([]);
+      setSearchResults({ wordResults: [], sentenceResults: [] });
       setCurrentView('list');
       return;
     }
 
-    const results = [];
+    // 단어장 검색
+    const wordResults = [];
     wordBooks.forEach(book => {
       const matchingWords = book.words.filter(word => 
         word.english.toLowerCase().includes(query.toLowerCase()) ||
         word.korean.toLowerCase().includes(query.toLowerCase())
       );
-      
       if (matchingWords.length > 0) {
-        results.push({
+        wordResults.push({
           wordBook: book,
           words: matchingWords
         });
       }
     });
 
-    setSearchResults(results);
+    // 문장북 검색 (영어/한글)
+    const sentenceResults = [];
+    sentenceBooks.forEach(book => {
+      const matchingSentences = (book.sentences || []).filter(sentence =>
+        (sentence.english && sentence.english.toLowerCase().includes(query.toLowerCase())) ||
+        (sentence.korean && sentence.korean.toLowerCase().includes(query.toLowerCase()))
+      );
+      if (matchingSentences.length > 0) {
+        sentenceResults.push({
+          sentenceBook: book,
+          sentences: matchingSentences
+        });
+      }
+    });
+
+    setSearchResults({ wordResults, sentenceResults });
     setCurrentView('search');
   };
 
@@ -247,7 +264,7 @@ function App() {
   const goHome = () => {
     if (currentView === 'search') {
       setSearchQuery('');
-      setSearchResults([]);
+      setSearchResults({ wordResults: [], sentenceResults: [] });
     }
     setCurrentView('list');
     setSelectedWordBook(null);
@@ -295,8 +312,15 @@ function App() {
       <div style={{ background: '#13204e', boxShadow: '0 2px 12px #0002' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', minHeight: 100, padding: '0 20px', marginTop: 0 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 32 }}>
-            <span style={{ color: '#fff', fontWeight: 800, fontSize: '1.45em', letterSpacing: '-1px', marginBottom: 1 }}>윤채사전</span>
-            <span style={{ color: '#cbd5e1', fontWeight: 400, fontSize: '0.92em', letterSpacing: '0.03em', opacity: 0.8, marginTop: 1 }}>ENGLISH DICTIONARY</span>
+            <span style={{ color: '#fff', fontWeight: 800, fontSize: '1.45em', letterSpacing: '-1px', marginBottom: 1 }}>
+              윤채사전
+            </span>
+            <span style={{ color: '#cbd5e1', fontWeight: 400, fontSize: '0.92em', letterSpacing: '0.03em', opacity: 0.8, marginTop: 1, display: 'flex', alignItems: 'center', gap: 6, marginLeft: 0 }}>
+              ENGLISH DICTIONARY
+              <span style={{ color: '#bdbdbd', fontWeight: 400, fontSize: '0.85em' }}>
+                .v{APP_VERSION}
+              </span>
+            </span>
           </div>
           {headerImage && (
             <img src={headerImage} alt="프로필" style={{ width: 62, height: 62, borderRadius: '50%', objectFit: 'cover', border: '2.5px solid #fff', background: '#eee', marginTop: 38 }} />
@@ -412,7 +436,8 @@ function App() {
         {currentView === 'search' && (
           <SearchResults 
             searchQuery={searchQuery}
-            searchResults={searchResults}
+            searchResults={searchResults.wordResults}
+            sentenceResults={searchResults.sentenceResults}
             onViewWordBook={viewWordBook}
           />
         )}
