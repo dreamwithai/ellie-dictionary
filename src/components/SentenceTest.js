@@ -322,7 +322,6 @@ function SentenceTest({ sentenceBooks, onBack }) {
   return (
     <div className="card" style={{ maxWidth: 480, margin: '32px auto', padding: 24 }}>
       <button className="btn btn-secondary" onClick={onBack} style={{ marginBottom: 16 }}>← 홈으로</button>
-      
       {/* 진행 상황 */}
       <div style={{
         display: 'flex',
@@ -336,23 +335,21 @@ function SentenceTest({ sentenceBooks, onBack }) {
         <span>{currentSentenceIndex + 1} / {testSentences.length}</span>
         <span>점수: {score}점</span>
       </div>
-
-      {/* 문장 */}
-      <div style={{ marginBottom: 24 }}>
-        {renderSentence()}
-      </div>
-
-      {/* 한글 해석 */}
-      <div style={{ 
-        color: '#666', 
-        marginBottom: 24, 
-        padding: '16px', 
-        background: '#f8f9fa', 
+      {/* 한글 해석(힌트) - 먼저 표시 */}
+      <div style={{
+        color: '#666',
+        marginBottom: 24,
+        padding: '16px',
+        background: '#f8f9fa',
         borderRadius: '8px',
         whiteSpace: 'pre-wrap',
         wordBreak: 'break-word'
       }}>
         {currentSentence?.korean}
+      </div>
+      {/* 문제(영어) - 아래에 표시 */}
+      <div style={{ marginBottom: 24 }}>
+        {renderSentence()}
       </div>
 
       {/* 결과 표시 */}
